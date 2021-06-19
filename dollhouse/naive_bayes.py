@@ -5,37 +5,49 @@ from dollhouse.statistics import gaussian
 class GaussianNaiveBayes:
     def fit(self, X, y):
         self.classes = np.array(sorted(set(y)))
-        n_classes = len(self.classes)
-        n_features = X.shape[1]
+        self.n_classes = len(self.classes)
+        self.n_samples, self.n_features = X.shape
 
-        self.P_y = np.zeros(n_classes)
-        self.means = np.zeros((n_classes, n_features))
-        self.standard_deviations = np.zeros((n_classes, n_features))
-
-        for i, c in enumerate(self.classes):
-            # The priors of the classes are the class proportions
-            self.P_y[i] = len(y[y == c]) / len(y)
-
-            X_c = X[y == c, :]
-            X_c_means = np.mean(X_c, axis=0)
-            n_X_c = X_c.shape[0]
-
-            # These parameter estimations are derived from MLE
-            # They end up being the sample mean and biased sample standard deviations
-            self.means[i, :] = X_c_means
-            self.standard_deviations[i, :] = np.sqrt(
-                np.sum((X_c - X_c_means) ** 2, axis=0) / n_X_c
-            )
+        self.P_y = self.calculate_priors(y)
+        self.means, self.standard_deviations = self.estimate_class_parameters(X, y)
         return
 
     def predict(self, X):
-        n_classes = len(self.classes)
-        n_samples = X.shape[0]
-        P_y_given_X = np.zeros((n_samples, n_classes))
+        P_y_given_X = np.zeros((self.n_samples, self.n_classes))
         for i, c in enumerate(self.classes):
-            class_means = self.means[i, :]
-            class_standard_deviations = self.standard_deviations[i, :]
-            P_y_given_X[:, i] = np.log(self.P_y[i]) + np.sum(
-                np.log(gaussian(X, class_means, class_standard_deviations)), axis=1
-            )
+            P_y_given_X[:, i] = np.log(
+                self.P_y[i]
+            ) + self.joint_log_likelihood_P_X_given_y(X, i)
         return self.classes[np.argmax(P_y_given_X, axis=1)]
+
+    def calculate_priors(self, y):
+        P_y = np.zeros(self.n_classes)
+        for i, c in enumerate(self.classes):
+            P_y[i] = len(y[y == c]) / len(y)
+        return P_y
+
+    def estimate_class_parameters(self, X, y):
+        def estimate_means(X, y):
+            means = np.zeros((self.n_classes, self.n_features))
+            for i, c in enumerate(self.classes):
+                means[i, :] = np.mean(X[y == c, :], axis=0)
+            return means
+
+        def estimate_standard_deviations(X, y, means):
+            standard_deviations = np.zeros((self.n_classes, self.n_features))
+            for i, c in enumerate(self.classes):
+                standard_deviations[i, :] = np.sqrt(
+                    np.sum((X[y == c, :] - means[i, :]) ** 2, axis=0)
+                    / X[y == c, :].shape[0]
+                )
+            return standard_deviations
+
+        means = estimate_means(X, y)
+        standard_deviations = estimate_standard_deviations(X, y, means)
+        return means, standard_deviations
+
+    def joint_log_likelihood_P_X_given_y(self, X, i):
+        return np.sum(
+            np.log(gaussian(X, self.means[i, :], self.standard_deviations[i, :])),
+            axis=1,
+        )
