@@ -6,7 +6,9 @@ and having them play house.
 
 ## Rules
 * Must use meaningful variable names (`learning_rate` vs. `alpha`)
-* Only import Numpy and Scipy
+* Only import Numpy
 
 ## In the dollhouse
-* Logistic regression
+* Logistic Regression
+* Naive Bayes
+    * Gaussian
