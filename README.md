@@ -9,6 +9,7 @@ and having them play house.
 * Only import Numpy
 
 ## In the dollhouse
+* Linear Regression
 * Logistic Regression
 * Naive Bayes
     * Gaussian
