@@ -2,7 +2,7 @@ import numpy as np
 from dollhouse.optimizers import gradient_descent
 
 
-class LinearRegression:
+class LogisticRegression:
     def __init__(self, learning_rate=0.01, max_iterations=500):
         self.learning_rate = learning_rate
         self.max_iterations = max_iterations
@@ -22,15 +22,17 @@ class LinearRegression:
         return
 
     def predict(self, X):
-        return self.predict_function(X, self.coefficients)
+        return np.round(self.predict_function(X, self.coefficients))
 
     def loss_function(self, X, y, coefficients):
+        y_predicted = self.predict_function(X, coefficients)
         return (
-            np.sum((y - self.predict_function(X, coefficients)) ** 2) / self.n_samples
+            -np.sum(y * np.log(y_predicted) + (1 - y) * np.log(1 - y_predicted))
+            / self.n_samples
         )
 
     def gradient_function(self, X, y, coefficients):
-        return -2 / self.n_samples * X.T @ (y - self.predict_function(X, coefficients))
+        return X.T @ (self.predict_function(X, coefficients) - y) / self.n_samples
 
     def predict_function(self, X, coefficients):
-        return X @ coefficients
+        return 1 / (1 + np.exp(-(X @ coefficients)))
