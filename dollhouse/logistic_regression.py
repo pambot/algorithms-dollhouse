@@ -1,5 +1,5 @@
 import numpy as np
-from dollhouse.optimizers import gradient_descent
+from dollhouse.toolshed.optimizers import gradient_descent
 
 
 class LogisticRegression:
