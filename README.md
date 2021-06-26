@@ -13,3 +13,4 @@ and having them play house.
 * Logistic Regression
 * Naive Bayes
     * Gaussian
+* K-Means
