@@ -1,5 +1,6 @@
 import numpy as np
 from dollhouse.toolshed.optimizers import gradient_descent
+from dollhouse.toolshed.statistics import normalize
 
 
 class LinearRegression:
@@ -8,6 +9,7 @@ class LinearRegression:
         self.max_iterations = max_iterations
 
     def fit(self, X, y):
+        X = normalize(X, by_column=True)
         self.n_samples, self.n_features = X.shape
         self.coefficients = np.zeros(self.n_features)
         self.coefficients = gradient_descent(
@@ -22,6 +24,7 @@ class LinearRegression:
         return
 
     def predict(self, X):
+        X = normalize(X, by_column=True)
         return self.predict_function(X, self.coefficients)
 
     def loss_function(self, X, y, coefficients):

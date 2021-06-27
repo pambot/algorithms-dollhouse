@@ -14,3 +14,4 @@ and having them play house.
 * Naive Bayes
     * Gaussian
 * K-Means
+* Principal Component Analysis
