@@ -15,3 +15,4 @@ and having them play house.
     * Gaussian
 * K-Means
 * Principal Component Analysis
+* Gaussian Mixtures 1D
