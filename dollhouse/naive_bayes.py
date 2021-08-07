@@ -48,6 +48,6 @@ class GaussianNaiveBayes:
 
     def joint_log_likelihood_P_X_given_y(self, X, i):
         return np.sum(
-            np.log(gaussian(X, self.means[i, :], self.standard_deviations[i, :]**2)),
+            np.log(gaussian(X, self.means[i, :], self.standard_deviations[i, :])),
             axis=1,
         )
