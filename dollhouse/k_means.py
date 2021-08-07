@@ -30,7 +30,7 @@ class KMeans:
         return np.argmin(centroid_distances, axis=1)
 
     def distance_function(self, X, centroid):
-        return ((X - centroid) ** 2).sum(axis=1)
+        return ((X - centroid) ** 2).sum(axis=1) ** 0.5
 
     def calculate_new_centroids(self, X, centroids, sample_clusters):
         for c in range(self.n_clusters):
