@@ -2,10 +2,9 @@ import numpy as np
 from numpy.testing import assert_array_equal
 from dollhouse.gaussian_mixtures import GaussianMixture1D
 
+np.random.seed(0)
 
 def test_gaussian_mixture_1d():
-    np.random.seed(0)
-
     X = np.concatenate([
         np.random.normal(10, 1, 100),
         np.random.normal(1, 2, 100)
