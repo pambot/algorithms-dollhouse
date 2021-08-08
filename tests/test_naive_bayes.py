@@ -17,5 +17,3 @@ def test_naive_bayes():
     y_predicted = nb.predict(X_test)
 
     assert_array_mismatch_less_than(y_predicted, y_test, tol=0.05)
-
-    
