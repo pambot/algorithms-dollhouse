@@ -7,6 +7,7 @@ and having them play house.
 ## Rules
 * Must use meaningful variable names (`learning_rate` vs. `alpha`)
 * Only import Numpy
+* Write (easy) tests benchmarking off of Scipy and Scikit-learn
 
 ## In the dollhouse
 * Linear Regression
