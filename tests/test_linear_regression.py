@@ -16,6 +16,7 @@ def test_linear_regression():
     y_predicted = lr.predict(X_test)
 
     assert_allclose(y_predicted, y_test, rtol=0.1)
+    assert_allclose(lr.coefficients, coefficients, rtol=0.01)
     
 
     
