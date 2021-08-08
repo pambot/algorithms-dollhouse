@@ -1,6 +1,6 @@
 import numpy as np
-from dollhouse.toolshed.optimizers import gradient_descent
-from dollhouse.toolshed.statistics import normalize
+from dollhouse.gradient_descent import gradient_descent
+from dollhouse.utils import normalize
 
 
 class LogisticRegression:

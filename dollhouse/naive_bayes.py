@@ -1,5 +1,5 @@
 import numpy as np
-from dollhouse.toolshed.statistics import gaussian
+from dollhouse.distributions import gaussian
 
 
 class GaussianNaiveBayes:

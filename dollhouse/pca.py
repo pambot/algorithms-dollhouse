@@ -1,5 +1,5 @@
 import numpy as np
-from dollhouse.toolshed.statistics import normalize
+from dollhouse.utils import normalize
 
 
 class PrincipalComponentAnalysis:
