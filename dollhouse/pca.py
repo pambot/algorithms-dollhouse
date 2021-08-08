@@ -8,14 +8,20 @@ class PrincipalComponentAnalysis:
 
     def fit(self, X):
         X = normalize(X, by_column=True)
-        covariance_matrix = np.cov(X)
-        top_eigenvectors = self.prune_components(covariance_matrix, self.top_components)
-        return self.change_basis(X, top_eigenvectors)
+        covariance_matrix = np.cov(X.T)
+        eigenvalues, eigenvectors = self.reorder_eigenvectors(
+            covariance_matrix, self.top_components
+        )
+        self.explained_variance = self.explain_variance(eigenvalues)
+        return self.change_basis(X, eigenvectors[:, : self.top_components])
 
-    def prune_components(self, covariance_matrix, top_components):
+    def reorder_eigenvectors(self, covariance_matrix, top_components):
         eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
-        ordered_eigenvectors = eigenvectors[np.argsort(-eigenvalues)]
-        return ordered_eigenvectors[:, :top_components]
+        reorder_descending = np.argsort(-eigenvalues)
+        return eigenvalues[reorder_descending], eigenvectors[reorder_descending]
 
-    def change_basis(self, X, eigenvectors):
-        return eigenvectors.T * X.T
+    def change_basis(self, X, top_eigenvectors):
+        return X @ top_eigenvectors
+
+    def explain_variance(self, eigenvalues):
+        return eigenvalues / np.sum(eigenvalues)
